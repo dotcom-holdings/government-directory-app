@@ -55,17 +55,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future _sign_up() {
-    print('i am inside');
-    Navigator.of(context).pop(
-      MaterialPageRoute(
-        builder: (BuildContext context){
-          return SignUpPage();
-        }
-      ),
-    );
-  }
-
   login_body() => SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -76,16 +65,19 @@ class _LoginPageState extends State<LoginPage> {
   login_header() => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          FlutterLogo(
-            colors: Colors.green,
-            size: 80.0,
+          Image.network(
+            'https://government.co.za/assets/img/mobileapplogo.png',
           ),
           SizedBox(
             height: 30.0,
           ),
           Text(
             'Welcome to ${UiData.app_name}',
-            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.green),
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w200,
+              color: Colors.green,
+            ),
           ),
           SizedBox(
             height: 5.0,
@@ -154,9 +146,8 @@ class _LoginPageState extends State<LoginPage> {
               new GestureDetector(
                 onTap: () {
                   print('worked');
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => SignUpPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()));
                 },
                 child: Text(
                   'SIGN UP FOR AN ACCCOUNT',

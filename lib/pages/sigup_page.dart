@@ -28,13 +28,37 @@ class _SignUpPageState extends State<SignUpPage> {
     return null;
   }
 
-  String _validateUsername(String value) {}
+  String _validateUsername(String value) {
+    if(value.length < 1){
+      return "UserName can't be empty";
+    }
 
-  String _validateName(String value) {}
+    return null;
+  }
 
-  String _validatePhoneNumber(String value) {}
+  String _validateName(String value) {
+    if(value.length < 1){
+      return "Name can't be empty";
+    }
 
-  String _validateConfirmPasssword(String value) {}
+    return null;
+  }
+
+  String _validatePhoneNumber(String value) {
+    if(value.length < 1){
+      return "Phonenumber can't be empty";
+    }
+    return null;
+  }
+
+  String _validateConfirmPasssword(String value) {
+    print(this._data.password);
+    if(this._data.password != value){
+      return "Passwords are not the same";
+    }
+
+    return null;
+  }
 
   String _validateEmail(String value) {
     try {
@@ -51,7 +75,9 @@ class _SignUpPageState extends State<SignUpPage> {
       _formKey.currentState.save();
 
       print('printing sign up datat');
-      print(_data);
+      print('password ${_data.password}');
+      print('confirm-password ${_data.confirm_password}');
+
     }
   }
 
@@ -74,20 +100,24 @@ class _SignUpPageState extends State<SignUpPage> {
   sign_up_header() => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-                    SizedBox(
+          SizedBox(
             height: 50.0,
           ),
-          FlutterLogo(
-            colors: Colors.grey,
-            size: 80.0,
+          // FlutterLogo(
+          //   colors: Colors.grey,
+          //   size: 80.0,
+          // ),
+          Image.network(
+            'https://government.co.za/assets/img/mobileapplogo.png',
           ),
           SizedBox(
             height: 30.0,
           ),
           Text(
-            'welcome to ${UiData.app_name}',
+            'Welcome to ${UiData.app_name}',
             style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w200,
               color: Colors.green,
             ),
           ),
@@ -182,6 +212,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   horizontal: 30.0,
                 ),
                 child: new TextFormField(
+                  obscureText: true,
                   validator: this._validatePassword,
                   onSaved: (String value) {
                     this._data.password = value;
@@ -199,6 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   horizontal: 30.0,
                 ),
                 child: new TextFormField(
+                  obscureText: true,
                   validator: this._validateConfirmPasssword,
                   onSaved: (String value) {
                     this._data.confirm_password = value;
@@ -210,7 +242,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-                            SizedBox(
+              SizedBox(
                 height: 10.0,
               ),
               Container(
