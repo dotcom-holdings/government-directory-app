@@ -22,8 +22,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String _validatePassword(String value) {
     if (value.length < 5) {
+      this._data.password = value;
+
       return 'The Password must be atleast 5 characters.';
     }
+    this._data.password = value;
 
     return null;
   }
@@ -52,16 +55,30 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   String _validateConfirmPasssword(String value) {
-    print(this._data.password);
-    if(this._data.password != value){
-      return "Passwords are not the same";
+    //print(this._data.password);
+    if(value == ''){
+      //print(this._data.password.toString());
+      return 'Please confirm password';
+    }else{
+      if(this._data.password != value){
+        return 'passwords are not the same';
+      }else{
+        return null;
+      }
     }
 
-    return null;
+    // if(value != ''){
+    //   print('confirm password is not null');
+    // }
+    // if(this._data.password != value){
+    //   return "Passwords are not the same";
+    // }
+
+    //return null;
   }
 
   String _validateEmail(String value) {
-    try {
+    try { 
       Validate.isEmail(value);
     } catch (e) {
       return 'The E-mail address must be valid';
@@ -87,6 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
       body: Center(
         child: sign_up_body(),
       ),
+      backgroundColor: Colors.white,
     );
   }
 
@@ -107,18 +125,18 @@ class _SignUpPageState extends State<SignUpPage> {
           //   colors: Colors.grey,
           //   size: 80.0,
           // ),
-          Image.network(
-            'https://government.co.za/assets/img/mobileapplogo.png',
+          Image.asset(
+            'assets/logo.png',
           ),
           SizedBox(
             height: 30.0,
           ),
           Text(
-            'Welcome to ${UiData.app_name}',
+            'Welcome To ${UiData.app_name}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w200,
-              color: Colors.green,
+              //color: Colors.green,
             ),
           ),
           SizedBox(
@@ -126,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           Text(
             'Create Account To Continue',
-            style: TextStyle(color: Colors.blueGrey),
+            //style: TextStyle(color: Colors.blueGrey),
           ),
         ],
       );
@@ -255,16 +273,21 @@ class _SignUpPageState extends State<SignUpPage> {
                     'CREATE ACCOUNT',
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: Colors.green,
+                  color: Colors.purple,
                   onPressed: this.submit,
                 ),
               ),
               SizedBox(
                 height: 5.0,
               ),
-              Text(
+              new GestureDetector(
+                onTap: (){
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: Text(
                 'ALREADY HAVE AN ACCOUNT?',
                 style: TextStyle(color: Colors.grey),
+              ),
               ),
             ],
           ),

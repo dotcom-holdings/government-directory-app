@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:government_directory/utilities/ui_data.dart';
 import 'package:validate/validate.dart';
-import 'sigup_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,7 +8,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginData {
-  String email = '';
+  String username = '';
   String password = '';
 }
 
@@ -25,11 +24,9 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-  String _validateEmail(String value) {
-    try {
-      Validate.isEmail(value);
-    } catch (e) {
-      return 'The E-mail address must be valid';
+  String _validateusername(String value) {
+    if(value.length < 3){
+      return 'username too short';
     }
 
     return null;
@@ -41,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       _formKey.currentState.save();
 
       print('printing the login data');
-      print('Email: ${_data.email}');
+      print('username: ${_data.username}');
       print('Password: ${_data.password}');
     }
   }
@@ -52,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: login_body(),
       ),
+      backgroundColor: Colors.white,
     );
   }
 
@@ -65,8 +63,8 @@ class _LoginPageState extends State<LoginPage> {
   login_header() => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Image.network(
-            'https://government.co.za/assets/img/mobileapplogo.png',
+          Image.asset(
+            'assets/logo.png',
           ),
           SizedBox(
             height: 30.0,
@@ -99,13 +97,13 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                 child: new TextFormField(
-                  validator: this._validateEmail,
+                  validator: this._validateusername,
                   onSaved: (String value) {
-                    this._data.email = value;
+                    this._data.username = value;
                   },
                   maxLines: 1,
                   decoration: InputDecoration(
-                      hintText: 'Enter Your Email', labelText: 'Email'),
+                      hintText: 'Enter Your username', labelText: 'Username'),
                 ),
               ),
               Container(
@@ -145,9 +143,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               new GestureDetector(
                 onTap: () {
-                  print('worked');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => SignUpPage()));
+                  Navigator.pushReplacementNamed(context, '/signup');
                 },
                 child: Text(
                   'SIGN UP FOR AN ACCCOUNT',
