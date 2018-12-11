@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:government_directory/utilities/ui_data.dart';
 import 'package:validate/validate.dart';
+import 'package:http/http.dart' as http;
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,6 +19,63 @@ class _LoginData {
 class _LoginPageState extends State<LoginPage> {
   _LoginData _data = new _LoginData();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  String account_error = '';
+
+  bool _is_in_async_call = false;
+
+  void _alert_user(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: new Text('Account Error'),
+          content: new Text(account_error),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('close'),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      }
+    );
+  }
+
+  Future _login() async{
+    setState((){
+      //tell the app that we are now in the async call
+      _is_in_async_call = true;
+    });
+
+    var data = jsonEncode({'action':'signin', 'username': _data.username, 'password': _data.password});
+
+    //make call
+    final response = await http.post('https://government.co.za/api/account', body: data);
+
+    setState((){
+      _is_in_async_call = false;
+    });
+
+    var result = response.body;
+    var user = json.decode(response.body);
+
+    //print(result);
+    //rint(user);
+
+    if(user['id'] == 'error'){
+      setState((){
+        account_error = user['account'];
+      });
+
+      //
+      _alert_user();
+    }else{
+      print(user);
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
 
   String _validatePassword(String value) {
     if (value.length < 5) {
@@ -37,6 +98,8 @@ class _LoginPageState extends State<LoginPage> {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save();
 
+      _login();
+
       print('printing the login data');
       print('username: ${_data.username}');
       print('Password: ${_data.password}');
@@ -46,10 +109,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: Center(
+      body: ModalProgressHUD(
+        child: Center(
         child: login_body(),
+       ),
+       inAsyncCall: _is_in_async_call,
+       opacity: 0.5,
+       progressIndicator: CircularProgressIndicator(),
       ),
-      backgroundColor: Colors.white,
+      
     );
   }
 
