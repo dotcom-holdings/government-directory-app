@@ -5,6 +5,9 @@ import 'models/government_category.dart';
 import 'package:http/http.dart' as http;
 import 'services/post_service.dart';
 import 'list_view_posts.dart';
+import 'models/GovCategory.dart';
+import 'GovCategory_list_tile.dart';
+
 class HomePage extends StatefulWidget{
 
 @override
@@ -40,6 +43,20 @@ class _HomePageState extends State<HomePage>{
     return parsed.map<Post>((json) => Post.fromjson(json)).toList();
   }
 
+  //get all government posts from api call
+  Future<List<GovCategory>> get_all_categories(http.Client client) async{
+    final response = await client.get('https://government.co.za/api/government_categories');
+    print(response.body);
+    
+    return compute(parse_category, response.body);
+  }
+
+  static List<GovCategory> parse_category(String responseBody){
+    final parsed_data = json.decode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed_data.map<GovCategory>((json) => GovCategory.fromjson(json)).toList();
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -73,16 +90,22 @@ class _HomePageState extends State<HomePage>{
             )
           ];
         },
-        body: FutureBuilder<List<Post>>(
-          future: get_all_posts(http.Client()),
+        //for getting posts
+        // body: FutureBuilder<List<Post>>(
+        //   future: get_all_posts(http.Client()),
+          body: FutureBuilder<List<GovCategory>>(
+          future: get_all_categories(http.Client()),
           builder: (context, snapshot){
             //callApi();
               if(snapshot.hasError){
                 print(snapshot.error);
               }
-              
-              return snapshot.hasData
-                  ? ListViewPosts(posts: snapshot.data)
+              //for posts
+              // return snapshot.hasData
+              //     ? ListViewPosts(posts: snapshot.data)
+              //     : Center(child: CircularProgressIndicator());
+                  return snapshot.hasData
+                  ? GovCategory_list_tile(gov_categories : snapshot.data)
                   : Center(child: CircularProgressIndicator());
           },
         ),
