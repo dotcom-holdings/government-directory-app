@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage>{
       //   child: Text('welcome home'),
       // ),
       body: NestedScrollView(
+        
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
           return <Widget>[
             SliverAppBar(
@@ -94,6 +95,7 @@ class _HomePageState extends State<HomePage>{
         // body: FutureBuilder<List<Post>>(
         //   future: get_all_posts(http.Client()),
           body: FutureBuilder<List<GovCategory>>(
+            
           future: get_all_categories(http.Client()),
           builder: (context, snapshot){
             //callApi();

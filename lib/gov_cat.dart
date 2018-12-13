@@ -17,7 +17,7 @@ class gov_cat extends StatelessWidget{
   Future<List<Company>> get_companies_by_category(http.Client client) async{
     final response = await client.get('https://government.co.za/api/get_companies_by_category/${govCategory.id}');
     print(response.body);
-
+    print('that was a list of companies');
     return compute(parse_companies, response.body);
   }
 

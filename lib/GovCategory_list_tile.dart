@@ -30,7 +30,7 @@ class GovCategory_list_tile extends StatelessWidget{
                     color: Colors.grey,
                     
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                 ),
                 onTap: () => _show_category(context, gov_categories[position]),
               )
