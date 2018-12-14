@@ -94,6 +94,8 @@ class _company_page_state extends State<company_page>
     String company_connection_data;
     String title;
     bool _empty = false;
+
+    try{
     if(action == 'phone'){
       //show company phone number
       connection_icon = new Icon(Icons.phone, color: Colors.cyan);
@@ -105,7 +107,12 @@ class _company_page_state extends State<company_page>
         company_connection_data = '${company.mobile}';
       }
     }
+    }catch(ex){
+      _empty = true;
+      print('exception caught while checking company phone number');
+    }
 
+    try{
     if(action == 'fax'){
       //show company fax number
       connection_icon = new Icon(Icons.print, color: Colors.cyan);
@@ -117,7 +124,12 @@ class _company_page_state extends State<company_page>
         company_connection_data = '${company.fax}';
       }
     }
+    }catch(ex){
+      _empty = true;
+      print('exception caught while checking company fax number');
+    }
 
+    try{
     if(action == 'email'){
       //show company email
       connection_icon = new Icon(Icons.email, color: Colors.cyan);
@@ -129,7 +141,12 @@ class _company_page_state extends State<company_page>
         company_connection_data = '${company.email}';
       }
     }
-
+    }catch(ex){
+      _empty = true;
+      print('exception caught while checking company email address');
+    }
+//catch exceptions in case one filed is null
+try{
     if(action == 'web'){
       //show company website
       connection_icon = new Icon(Icons.web, color: Colors.cyan);
@@ -141,7 +158,13 @@ class _company_page_state extends State<company_page>
         company_connection_data = '${company.website}';
       }
     }
+}catch(ex){
+  _empty = true;
+  //company_connection_data = '';
+  print('exception caught while cheking company website');
+}
 
+try{
     if(action == 'location'){
       //show company location
       connection_icon = new Icon(Icons.location_on, color: Colors.cyan);
@@ -152,6 +175,10 @@ class _company_page_state extends State<company_page>
         _empty = false;
         company_connection_data = '${company.address}';
       }
+    }
+    }catch(ex){
+      _empty = true ;
+      print('exception caught while trying to read company location');
     }
 
     showModalBottomSheet(
@@ -175,6 +202,65 @@ class _company_page_state extends State<company_page>
         );
       }
     );
+  }
+
+  void _menu(BuildContext context){
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context){
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text('Favourites'),
+            onTap: (){
+              print('favourites tabed');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.videocam),
+            title: Text('Video Channel'),
+            onTap: (){
+              print('video channel tabbed');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.add),
+            title: Text('Add a free ad'),
+            onTap: (){
+              print('add free add tabed');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: (){
+              print('log out tabed');
+            },
+          )
+          ],
+        );
+      }
+    );
+  }
+
+  String render_company_image(){
+    bool _empty = false;
+    try{
+      if(company.url.isEmpty || company.url == null){
+        _empty = true;
+      }
+    }catch(ex){
+      _empty = true;
+      print('rendering company image caused an exception but it was handled mate');
+    }
+
+    if(_empty){
+      return 'http://jlouage.com/images/intro-bg.jpg';
+    }else{
+      return 'http://cdn.adslive.com/${company.url}';
+    }
   }
 
   @override
@@ -224,6 +310,9 @@ class _company_page_state extends State<company_page>
                       shrinkWrap: false,
                       slivers: <Widget>[
                         new SliverAppBar(
+                          iconTheme: IconThemeData(
+                            color: Colors.black,
+                          ),
                           elevation: 0.0,
                           forceElevated: true,
                           // leading: new IconButton(
@@ -240,23 +329,23 @@ class _company_page_state extends State<company_page>
                           flexibleSpace: new FlexibleSpaceBar(
                             title: new Container(
                               width: width.value,
-                              child: Text('${company.name}'),
+                              child: Text('${company.name}',style: TextStyle(color: Colors.black),),
                             ),
                             background: new Stack(
                               fit: StackFit.expand,
                               children: <Widget>[
-                                new Container(
-                                  //width: width.value,
-                                  height: _appBarHeight,
-                                  decoration: new BoxDecoration(
-                                    //image: NetworkImage(''),
-                                    image: new DecorationImage(
-                                      image: new NetworkImage(
-                                        company.url.isEmpty ? 'http://jlouage.com/images/intro-bg.jpg' : 'cdn.adslive.com/${company.url}'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                )
+                                 new Container(
+                                   //width: width.value,
+                                   height: _appBarHeight,
+                                   decoration: new BoxDecoration(
+                                     image: new DecorationImage(
+                                       image: new NetworkImage(
+                                        //company.url.isEmpty ? 'http://jlouage.com/images/intro-bg.jpg' : 'http://cdn.adslive.com/${company.url}'),
+                                        render_company_image()),
+                                       fit: BoxFit.fill,
+                                     ),
+                                   ),
+                                 )
                               ],
                             ),
                           ),
@@ -288,7 +377,7 @@ class _company_page_state extends State<company_page>
                                               IconButton(
                                                 icon: new Icon(Icons.phone,color: Colors.cyan,),
                                                 onPressed: (){
-                                                  print('company image ${company.url}');
+                                                  //print('company image ${company.url}');
                                                   _show_company_connection(context, 'phone');
                                                 },
                                               ),
@@ -401,7 +490,9 @@ class _company_page_state extends State<company_page>
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.menu),
-              onPressed: () {},
+              onPressed: () {
+                _menu(context);
+              },
             ),
             IconButton(
               icon: Icon(Icons.search),

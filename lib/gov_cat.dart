@@ -31,6 +31,7 @@ class gov_cat extends StatelessWidget{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: new Text('${govCategory.name.toUpperCase()}', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0),),
       ),
       body: FutureBuilder<List<Company>>(

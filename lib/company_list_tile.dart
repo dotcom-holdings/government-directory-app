@@ -70,7 +70,7 @@ class company_list_tile extends StatelessWidget{
                          companies[position].name,
                           style: TextStyle(
                            fontSize: 15.0, 
-                             fontWeight: FontWeight.bold,
+                             fontWeight: FontWeight.w900,
                           ),
                          ),
                        ),
@@ -78,7 +78,7 @@ class company_list_tile extends StatelessWidget{
                        padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
                          child: Text(
                            companies[position].address,
-                           style: TextStyle(fontSize: 18.0),
+                           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
                          ),
                       ),
                       ],

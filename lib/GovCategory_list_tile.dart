@@ -27,7 +27,8 @@ class GovCategory_list_tile extends StatelessWidget{
                   '${gov_categories[position].name.toUpperCase()}',
                   style: TextStyle(
                     fontSize: 15.0,
-                    color: Colors.grey,
+                    fontWeight: FontWeight.w900,
+                    //color: Colors.grey,
                     
                   ),
                   textAlign: TextAlign.left,

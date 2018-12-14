@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage>{
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
           return <Widget>[
             SliverAppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               expandedHeight: 100.0,
               floating: false,
               pinned: true,
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage>{
                 title: Text('GOVERNMENT DIRECTORY',
                 style: TextStyle(
                   fontWeight: FontWeight.w300,
-                  color: Colors.grey,
+                  color: Colors.white,
                   fontSize: 16.0,
                 ),),
                 // background: Image.network(
@@ -115,16 +115,18 @@ class _HomePageState extends State<HomePage>{
         //   child: Text('welcome home'),
         ),
         bottomNavigationBar: new BottomAppBar(
-          color: Colors.white,
+          //color: Colors.green,
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               new IconButton(icon: new Icon(Icons.menu),onPressed: (){
-                showModalBottomSheet<void>(
-                  context: context,
-                  builder: (BuildContext context) => const _appDrawer(),
-                );
+                // showModalBottomSheet<void>(
+                //   context: context,
+                //   builder: (BuildContext context) => const _appDrawer(),
+                // );
+
+                _app_menu(context);
               },),
               new IconButton(icon: new Icon(Icons.search),onPressed: (){},),
             ],
@@ -132,15 +134,14 @@ class _HomePageState extends State<HomePage>{
         ),
     );
   }
-}
 
-class _appDrawer extends StatelessWidget{
-  const _appDrawer();
-
-  @override
-  Widget build(BuildContext context){
-    return Drawer(
-      child: Column(
+  void _app_menu(BuildContext context){
+      showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context){
+           return Container(
+        //color: Colors.green,
+        child:       Column(
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.favorite),
@@ -158,7 +159,7 @@ class _appDrawer extends StatelessWidget{
           ),
           ListTile(
             leading: Icon(Icons.add),
-            title: Text('Add a free ad'),
+            title: Text('Add a free adds'),
             onTap: (){
               print('add free add tabed');
             },
@@ -172,6 +173,60 @@ class _appDrawer extends StatelessWidget{
           )
         ],
       ),
+      );
+      },
+
+
+    );
+  }
+}
+
+class _appDrawer extends StatelessWidget{
+  const _appDrawer();
+
+  @override
+  Widget build(BuildContext context){
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context){
+            child: Container(
+        color: Colors.green,
+        child:       Column(
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text('Favourites'),
+            onTap: (){
+              print('favourites tabed');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.videocam),
+            title: Text('Video Channel'),
+            onTap: (){
+              print('video channel tabbed');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.add),
+            title: Text('Add a free adds'),
+            onTap: (){
+              print('add free add tabed');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: (){
+              print('log out tabed');
+            },
+          )
+        ],
+      ),
+      );
+      },
+
+
     );
   }
 }
