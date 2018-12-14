@@ -14,6 +14,7 @@ environment:
 
 dependencies:
   validate: ^1.7.0
+  flutter_secure_storage: ^3.1.2
   modal_progress_hud: ^0.1.2
   http: ^0.12.0
   flutter:
