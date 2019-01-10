@@ -496,7 +496,9 @@ try{
             ),
             IconButton(
               icon: Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () {
+                print('search pressed');
+              },
             )
           ],
         ),

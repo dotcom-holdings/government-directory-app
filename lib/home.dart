@@ -7,14 +7,29 @@ import 'services/post_service.dart';
 import 'list_view_posts.dart';
 import 'models/GovCategory.dart';
 import 'GovCategory_list_tile.dart';
+//shared preferences import
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget{
 
 @override
 _HomePageState createState() => _HomePageState();
 }
-
+const String _logged_in_key = 'loggedin';
 class _HomePageState extends State<HomePage>{
+    bool _logged_in;
+  SharedPreferences preferences;
+
+  @override
+  void initState() {
+    super.initState();
+    print('runned');
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      preferences = sp;
+    });
+
+  }
+
   callApi(){
     Post post = Post(
       body: 'i am simphiwe hlabisa',
@@ -55,6 +70,10 @@ class _HomePageState extends State<HomePage>{
     final parsed_data = json.decode(responseBody).cast<Map<String, dynamic>>();
 
     return parsed_data.map<GovCategory>((json) => GovCategory.fromjson(json)).toList();
+  }
+    //remove pref data
+  void _remove_local_data(String key){
+    preferences?.remove(key);
   }
 
   @override
@@ -128,7 +147,10 @@ class _HomePageState extends State<HomePage>{
 
                 _app_menu(context);
               },),
-              new IconButton(icon: new Icon(Icons.search),onPressed: (){},),
+              new IconButton(icon: new Icon(Icons.search),onPressed: (){
+                print('home search pressed');
+                Navigator.pushNamed(context, '/search');
+              },),
             ],
           ),
         ),
@@ -136,20 +158,20 @@ class _HomePageState extends State<HomePage>{
   }
 
   void _app_menu(BuildContext context){
-      showModalBottomSheet(
+      showModalBottomSheet<void>(
+      
       context: context,
       builder: (BuildContext context){
-           return Container(
-        //color: Colors.green,
-        child:       Column(
+           return    new   Column(
+             mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Favourites'),
-            onTap: (){
-              print('favourites tabed');
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.favorite),
+          //   title: Text('Favourites'),
+          //   onTap: (){
+          //     print('favourites tabed');
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.videocam),
             title: Text('Video Channel'),
@@ -169,10 +191,12 @@ class _HomePageState extends State<HomePage>{
             title: Text('Logout'),
             onTap: (){
               print('log out tabed');
+              _remove_local_data(_logged_in_key);
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+              //exit(0);
             },
           )
         ],
-      ),
       );
       },
 

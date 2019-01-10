@@ -6,6 +6,9 @@ import 'package:validate/validate.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+//shared preferences import
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _LoginPageState();
@@ -15,8 +18,66 @@ class _LoginData {
   String username = '';
   String password = '';
 }
+const String _logged_in_key = 'loggedin';
+const String _id_key = 'id';
+const String _name_key = 'name';
+const String _username_key = 'username';
+const String _level_key = 'level';
+const String _status_key = 'status';
 
 class _LoginPageState extends State<LoginPage> {
+  bool _logged_in;
+  SharedPreferences preferences;
+
+  @override
+  void initState() {
+    super.initState();
+    print('runned');
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      preferences = sp;
+      _logged_in = preferences.getBool(_logged_in_key);
+      if(_logged_in == null){
+        //set init value
+        _logged_in = false;
+        print('init auto log in');
+
+        _auto_log_in(_logged_in);  //init here
+      }else if(_logged_in == false){
+        print('user not logged in');
+      }else{
+        //_remove_local_data(_logged_in_key);
+        print('user logged in');
+        print('logged in user is ${_get_local_data(_name_key)}');
+      
+      Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
+
+  }
+
+  //init auto log in
+  void _auto_log_in(bool value){
+    setState((){
+      _logged_in = value;
+    });
+    preferences?.setBool(_logged_in_key, value);
+  }
+
+  //remove pref data
+  void _remove_local_data(String key){
+    preferences?.remove(key);
+  }
+
+  //set pref data
+  void _set_local_data(String key, String value){
+    preferences?.setString(key, value);
+  }
+
+  //get pref data
+  String _get_local_data(String key){
+    return preferences?.getString(key);
+  }
+
   _LoginData _data = new _LoginData();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   String account_error = '';
@@ -73,6 +134,15 @@ class _LoginPageState extends State<LoginPage> {
       _alert_user();
     }else{
       print(user);
+      //save user data here
+      //enable auto log in her
+      _auto_log_in(true);
+      _set_local_data(_id_key, user['id']);
+      _set_local_data(_name_key, user['name']);
+      _set_local_data(_username_key, user['username']);
+      _set_local_data(_level_key, user['level']);
+      _set_local_data(_status_key, user['status']);
+
       Navigator.pushReplacementNamed(context, '/home');
     }
   }

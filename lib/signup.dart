@@ -5,6 +5,7 @@ import 'package:government_directory/utilities/ui_data.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:validate/validate.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -19,14 +20,61 @@ class _SignUpData {
   String password;
   String confirm_password;
 }
+const String _logged_in_key = 'loggedin';
+const String _id_key = 'id';
+const String _name_key = 'name';
+const String _username_key = 'username';
+const String _level_key = 'level';
+const String _status_key = 'status';
 
 class _SignUpPageState extends State<SignUpPage> {
+    bool _logged_in;
+  SharedPreferences preferences;
+
   _SignUpData _data = new _SignUpData();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
     String account_error = '';
 
   bool _is_in_async_call = false;
 
+  @override
+  void initState() {
+    super.initState();
+    print('runned');
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      preferences = sp;
+      _logged_in = preferences.getBool(_logged_in_key);
+      if(_logged_in == null){
+        //set init value
+        _logged_in = false;
+        print('init auto log in');
+
+        _auto_log_in(_logged_in);  //init here
+      }else if(_logged_in == false){
+        print('user not logged in');
+      }else{
+        //_remove_local_data(_logged_in_key);
+        print('user logged in');
+        print('logged in user is ${_get_local_data(_name_key)}');
+      }
+    });
+
+  }
+    //get pref data
+  String _get_local_data(String key){
+    return preferences?.getString(key);
+  }
+    //set pref data
+  void _set_local_data(String key, String value){
+    preferences?.setString(key, value);
+  }
+    //init auto log in
+  void _auto_log_in(bool value){
+    setState((){
+      _logged_in = value;
+    });
+    preferences?.setBool(_logged_in_key, value);
+  }
   void _alert_user(){
     showDialog(
       context: context,
@@ -77,6 +125,14 @@ class _SignUpPageState extends State<SignUpPage> {
       _alert_user();
     }else{
       print(user);
+            _auto_log_in(true);
+      _set_local_data(_id_key, user['id']);
+      _set_local_data(_name_key, user['name']);
+      _set_local_data(_username_key, user['username']);
+      _set_local_data(_level_key, user['level']);
+      _set_local_data(_status_key, user['status']);
+
+
       Navigator.pushReplacementNamed(context, '/home');
     }
   }
