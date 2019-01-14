@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:government_directory/search_page.dart';
 import 'models/company.dart';
 // class company_page extends StatelessWidget{
 //   final Company company;
@@ -211,13 +212,13 @@ try{
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Favourites'),
-            onTap: (){
-              print('favourites tabed');
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.favorite),
+          //   title: Text('Favourites'),
+          //   onTap: (){
+          //     print('favourites tabed');
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.videocam),
             title: Text('Video Channel'),
@@ -498,6 +499,7 @@ try{
               icon: Icon(Icons.search),
               onPressed: () {
                 print('search pressed');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => search_page()));
               },
             )
           ],

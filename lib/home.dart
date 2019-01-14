@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:government_directory/search_page.dart';
 import 'models/government_category.dart';
 import 'package:http/http.dart' as http;
 import 'services/post_service.dart';
@@ -18,6 +19,9 @@ _HomePageState createState() => _HomePageState();
 const String _logged_in_key = 'loggedin';
 class _HomePageState extends State<HomePage>{
     bool _logged_in;
+
+    final GlobalKey<ScaffoldState> _scaffold_key = new GlobalKey<ScaffoldState>();
+  
   SharedPreferences preferences;
 
   @override
@@ -27,7 +31,6 @@ class _HomePageState extends State<HomePage>{
     SharedPreferences.getInstance().then((SharedPreferences sp) {
       preferences = sp;
     });
-
   }
 
   callApi(){
@@ -79,12 +82,14 @@ class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+
       // appBar: AppBar(
       //   title: Text('Home'),
       // ),
       // body: Center(
       //   child: Text('welcome home'),
       // ),
+      key: _scaffold_key,
       body: NestedScrollView(
         
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
@@ -149,7 +154,9 @@ class _HomePageState extends State<HomePage>{
               },),
               new IconButton(icon: new Icon(Icons.search),onPressed: (){
                 print('home search pressed');
-                Navigator.pushNamed(context, '/search');
+                //Map result = await Navigator.push(context, MaterialPageRoute(builder: (context) => company_page(company: company, old_context: context,)));
+                //Navigator.pushNamed(context, '/search');
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => search_page(old_context: context)));
               },),
             ],
           ),
