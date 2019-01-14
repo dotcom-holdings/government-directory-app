@@ -330,7 +330,13 @@ try{
                           flexibleSpace: new FlexibleSpaceBar(
                             title: new Container(
                               width: width.value,
-                              child: Text('${company.name}',style: TextStyle(color: Colors.black),),
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                  color: Colors.black
+                                ),
+                                child: Text('${company.name}',style: TextStyle(color: Colors.white),),
+                              ),
+                              // child: Text('${company.name}',style: TextStyle(color: Colors.black),),
                             ),
                             background: new Stack(
                               fit: StackFit.expand,

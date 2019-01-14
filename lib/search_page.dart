@@ -31,6 +31,8 @@ class _search_page_state extends State<search_page> {
   _onClear() {
     _search.clear();
     setState(() {
+      _is_searching = false;
+      _after_serching = false;
       //found_companies = [];
 
     });
@@ -142,14 +144,40 @@ class _search_page_state extends State<search_page> {
             );
           },
         );
+      }else{
+        return new Center(
+          child: Text('No Results Found!'),
+        );
       }
     }else{
       return new Center(
-        child: Text('Search Government Directory'),
+        child: _starting(),
+        //child: Text('Search Government Directory')//Column(
+        
         );
     }
   }
+  _starting() => SingleChildScrollView(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        _on_not_searching()
+        //_on_not_searching(),
+      ],
+    ),
+  );
+  _on_not_searching() => Column(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Icon(Icons.search),
+      SizedBox(height: 2.0,),
+      Text('Search Government Directory'),
+    ],
+  );
 
+  _on_no_results_found() => Text(
+    'No Results Found!'
+  );
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

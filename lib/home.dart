@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:government_directory/add_advert.dart';
 import 'package:government_directory/search_page.dart';
 import 'models/government_category.dart';
 import 'package:http/http.dart' as http;
@@ -191,6 +192,8 @@ class _HomePageState extends State<HomePage>{
             title: Text('Add a free adds'),
             onTap: (){
               print('add free add tabed');
+              Navigator.push(context, MaterialPageRoute(builder: (context) => add_advert()));
+
             },
           ),
           ListTile(
