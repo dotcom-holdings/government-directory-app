@@ -2,30 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:government_directory/search_page.dart';
 import 'models/company.dart';
-// class company_page extends StatelessWidget{
-//   final Company company;
-
-//   company_page({
-//     Key key, this.company
-//   }) : super(key : key);
-
-//   @override
-//   Widget build(BuildContext context){
-//     return Scaffold(
-//        appBar: AppBar(
-//         title: new Text(
-//           '${company.name.toUpperCase()}',
-//          style: TextStyle(
-//            fontWeight: FontWeight.w300,
-//          ),),
-//        ),
-//                     body: new Text(
-//         'test'
-//       ),
-
-//     );
-//   }
-// }
 
 class company_page extends StatefulWidget {
   final Company company;
@@ -48,7 +24,7 @@ class _company_page_state extends State<company_page>
   Animation<double> width;
   Animation<double> height;
   DecorationImage type;
-  //List data = imageData;
+
   double _appBarHeight = 256.0;
   AppBarBehavior _appBarBehavior = AppBarBehavior.pinned;
 
